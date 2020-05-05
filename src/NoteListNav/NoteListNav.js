@@ -4,6 +4,7 @@ import { NavLink, Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import CircleButton from '../CircleButton/CircleButton'
 import { countNotesForFolder } from '../notes-helpers'
+import FolderError from '../FolderError/FolderError'
 import './NoteListNav.css'
 
 export default function NoteListNav() {
@@ -14,15 +15,17 @@ export default function NoteListNav() {
           <ul className='NoteListNav__list'>
             {context.folders.map(folder =>
               <li key={folder.id}>
-                <NavLink
-                  className='NoteListNav__folder-link'
-                  to={`/folder/${folder.id}`}
-                >
-                  <span className='NoteListNav__num-notes'>
-                    {countNotesForFolder(context.notes, folder.id)}
-                  </span>
-                  {folder.name}
-                </NavLink>
+                <FolderError>
+                  <NavLink
+                    className='NoteListNav__folder-link'
+                    to={`/folder/${folder.id}`}
+                  >
+                    <span className='NoteListNav__num-notes'>
+                      {countNotesForFolder(context.notes, folder.id)}
+                    </span>
+                      {folder.name}
+                  </NavLink>
+                </FolderError>
               </li>
             )}
           </ul>
@@ -41,10 +44,5 @@ export default function NoteListNav() {
       </div>
       )}
     </NotefulContext.Consumer>
-    
   )
 }
-
-// NoteListNav.defaultProps = {
-//   folders: []
-// }

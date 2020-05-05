@@ -1,0 +1,18 @@
+.FolderError__folder-link {
+    background-color: #030f1f;
+    color: #b5b3b3;
+    display: block;
+    font-family: var(--custom-font);
+    font-size: 20px;
+    margin: 0 0 8px auto;
+    max-width: 180px;
+    padding: 8px 16px;
+    text-decoration: none;
+  }
+  .FolderError__folder-link:hover {
+    color: #FFB72F;
+    cursor: pointer;
+  }
+  .FolderError__folder-link.active {
+    background-color: #102541;
+  }

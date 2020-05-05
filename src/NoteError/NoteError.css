@@ -1,0 +1,24 @@
+.NoteError__note-link {
+    --note-height: 80px;
+    background-color: #010d1e;
+    color: #cacaca;
+    height: var(--note-height);
+    margin-bottom: 8px;
+    max-width: 380px;
+    padding: 8px 0 8px 8px;
+    position: relative;
+}
+.NoteError__note-link:hover {
+    color: #FFB72F;
+    cursor: pointer;
+}
+.NoteError__note-link.active {
+    background-color: #102541;
+}
+.NoteError__title {
+    font-family: var(--custom-font);
+    font-size: 20px;
+    margin: 0;
+    max-width: 80%;
+    min-height: 24px;
+  }

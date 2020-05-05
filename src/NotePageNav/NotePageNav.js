@@ -1,6 +1,7 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import CircleButton from '../CircleButton/CircleButton'
+import PropTypes from 'prop-types'
 import './NotePageNav.css'
 
 export default function NotePageNav(props) {
@@ -26,7 +27,12 @@ export default function NotePageNav(props) {
 }
 
 NotePageNav.defaultProps = {
-  history: {
-    goBack: () => {}
-  }
+  folders: []
 }
+
+NotePageNav.propTypes = {
+  folders: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired
+  }))
+}  

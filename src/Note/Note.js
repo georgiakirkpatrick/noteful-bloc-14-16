@@ -3,6 +3,7 @@ import NotefulContext from '../NotefulContext.js'
 import { Link } from 'react-router-dom'
 import { format } from 'date-fns'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import PropTypes from 'prop-types'
 import './Note.css'
 
 function deleteNote(noteId, callBack) {
@@ -28,7 +29,6 @@ function deleteNote(noteId, callBack) {
 }
 
 export default function Note(props) {
-
   return (
     <NotefulContext.Consumer>
       {(context) => (
@@ -39,8 +39,7 @@ export default function Note(props) {
             </Link>
           </h2>
           <button className='Note__delete' type='button' onClick={() => 
-            {console.log(context)
-              deleteNote(props.id, context.mainDelete)}
+            {deleteNote(props.id, context.mainDelete)}
             }>
             <FontAwesomeIcon icon='trash-alt' />
             {' '}
@@ -60,4 +59,18 @@ export default function Note(props) {
     </NotefulContext.Consumer>
       
   )
+}
+
+Note.defaultProps = {
+  notes: [],
+}
+
+Note.propTypes = {
+  notes: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    modified: PropTypes.string.isRequired,
+    folderId: PropTypes.string.isRequired,
+    content: PropTypes.string,
+    id: PropTypes.string.isRequired
+  }))
 }
