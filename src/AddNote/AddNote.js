@@ -1,8 +1,8 @@
 import React from 'react'
-import './AddNote.css'
 import ValidationError from '../ValidationError/ValidationError'
 import PropTypes from 'prop-types'
 import dayjs from 'dayjs'
+import './AddNote.css'
 
 
 export default class AddNote extends React.Component {
@@ -41,11 +41,12 @@ export default class AddNote extends React.Component {
             'content-type': 'application/json'
           }
         })
-        .then(
-            window.location.href='/'
-        )
+        .then(() => {
+            this.props.history.push('/')
+        })
         .catch(error => {
-            console.error(error)
+            console.log(error)
+            alert('Something went wrong.  Could not create note.')
         })
     }
 
@@ -138,12 +139,14 @@ export default class AddNote extends React.Component {
 }
 
 AddNote.defaultProps = {
-    folders: []
+    folders: [],
+    history: {push: () => {}}
 }
   
 AddNote.propTypes = {
     folders: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired
-    }))
+    })),
+    history: PropTypes.object
 }

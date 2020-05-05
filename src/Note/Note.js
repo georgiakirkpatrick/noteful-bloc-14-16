@@ -6,8 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PropTypes from 'prop-types'
 import './Note.css'
 
-function deleteNote(noteId, callBack) {
-  fetch(`http://localhost:9090/notes/${noteId}`, {
+function deleteNote(note, history, callBack) {
+  fetch(`http://localhost:9090/notes/${note.id}`, {
     method: 'DELETE',
     headers: {
       'content-type': 'application/json'
@@ -18,13 +18,13 @@ function deleteNote(noteId, callBack) {
         return response.json()
     }
   })
-  .then(data => {
-      console.log(callBack)
-      callBack(noteId)
-      window.location.href='/'
+  .then(() => {
+      callBack(note.id)
+      history.push(`/folder/${note.folderId}`)
   })
   .catch(error => {
     console.error(error)
+    alert('Something went wrong.  Could not delete note.')
   })
 }
 
@@ -34,12 +34,12 @@ export default function Note(props) {
       {(context) => (
         <div className='Note'>
           <h2 className='Note__title'>
-            <Link to={`/note/${props.id}`}>
-              {props.name}
+            <Link to={`/note/${props.note.id}`}>
+              {props.note.name}
             </Link>
           </h2>
           <button className='Note__delete' type='button' onClick={() => 
-            {deleteNote(props.id, context.mainDelete)}
+            {deleteNote(props.note, props.history, context.mainDelete)}
             }>
             <FontAwesomeIcon icon='trash-alt' />
             {' '}
@@ -50,7 +50,7 @@ export default function Note(props) {
               Modified 
               {' '}
               <span className='Date'>
-                {format(props.modified, 'Do MMM YYYY')}
+                {format(props.note.modified, 'Do MMM YYYY')}
               </span>
             </div>
           </div>
@@ -63,14 +63,16 @@ export default function Note(props) {
 
 Note.defaultProps = {
   notes: [],
+  history: {push: () => {}}
 }
 
 Note.propTypes = {
-  notes: PropTypes.arrayOf(PropTypes.shape({
+  note: PropTypes.shape({
     name: PropTypes.string.isRequired,
     modified: PropTypes.string.isRequired,
     folderId: PropTypes.string.isRequired,
     content: PropTypes.string,
     id: PropTypes.string.isRequired
-  }))
+  }),
+  history: PropTypes.object
 }

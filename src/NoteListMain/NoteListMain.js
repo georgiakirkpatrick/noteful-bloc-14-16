@@ -15,9 +15,8 @@ export default function NoteListMain(props) {
           <li key={note.id}>
             <NoteError>
               <Note
-                id={note.id}
-                name={note.name}
-                modified={note.modified}
+                note={note}
+                history={props.history}
               />
             </NoteError>
           </li>
@@ -41,6 +40,7 @@ export default function NoteListMain(props) {
 
 NoteListMain.defaultProps = {
   notes: [],
+  history: {push: () => {}}
 }
 
 NoteListMain.propTypes = {
@@ -50,5 +50,6 @@ NoteListMain.propTypes = {
     folderId: PropTypes.string.isRequired,
     content: PropTypes.string,
     id: PropTypes.string.isRequired
-  }))
+  })),
+  history: PropTypes.object
 }

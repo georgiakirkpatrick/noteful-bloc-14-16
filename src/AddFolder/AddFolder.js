@@ -28,11 +28,12 @@ export default class AddFolder extends React.Component {
             'content-type': 'application/json'
           }
         })
-        .then(data => {
-            window.location.href='/'
+        .then(() => {
+            this.props.history.push('/')
         })
         .catch(error => {
-            console.error(error)
+            console.log(error)
+            alert('Something went wrong.  Could not create folder.')
         })
     }
 
@@ -76,12 +77,9 @@ export default class AddFolder extends React.Component {
 }
 
 AddFolder.defaultProps = {
-    folders: []
+    history: {push: () => {}}
 }
   
 AddFolder.propTypes = {
-    folders: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired
-    }))
+    history: PropTypes.object.isRequired
 }

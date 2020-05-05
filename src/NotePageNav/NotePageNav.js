@@ -27,12 +27,14 @@ export default function NotePageNav(props) {
 }
 
 NotePageNav.defaultProps = {
-  folders: []
+  folders: [],
+  history: {push: () => {}}
 }
 
 NotePageNav.propTypes = {
   folders: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired
-  }))
+  })),
+  history: PropTypes.object
 }  

@@ -7,9 +7,8 @@ export default function NotePageMain(props) {
   return (
     <section className='NotePageMain'>
       <Note
-        id={props.note.id}
-        name={props.note.name}
-        modified={props.note.modified}
+        note={props.note}
+        history={props.history}
       />
       <div className='NotePageMain__content'>
         {props.note.content.split(/\n \r|\n/).map((para, i) =>
@@ -27,7 +26,8 @@ NotePageMain.defaultProps = {
     folderId: '',
     id: '',
     content: ''
-  }
+  },
+  history: {push: () => {}}
 }
 
 NotePageMain.propTypes = {
@@ -36,5 +36,6 @@ NotePageMain.propTypes = {
     modified: PropTypes.string.isRequired,
     folderId: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired
-  })
+  }),
+  history: PropTypes.object
 }
