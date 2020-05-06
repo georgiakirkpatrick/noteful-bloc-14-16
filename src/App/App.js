@@ -25,7 +25,6 @@ async function fetchNotefulData() {
                 }
             })
     )
-    
     try {
         return Promise.all(promises)
     }
@@ -46,6 +45,18 @@ export default class App extends Component {
         )
         this.setState({
             notes: newNotes
+        })
+    }
+
+    updateStateFolders = (newFolders) => {
+        this.setState({
+            folders: [...this.state.folders, newFolders]
+        })
+    }
+
+    updateStateNotes = (newNote) => {
+        this.setState({
+            notes: [...this.state.notes, newNote]
         })
     }
 
@@ -138,14 +149,14 @@ export default class App extends Component {
                 />
                 <Route path="/add-folder" exact 
                     render={routeProps => {
-                        return <AddFolder history={routeProps.history}/>
+                        return <AddFolder history={routeProps.history} updateStateFolders={this.updateStateFolders} />
                     }}
                 />    
                     
                 <Route 
                     path="/add-note" 
                     render={routeProps => {
-                        return <AddNote history={routeProps.history} folders={folders}/>
+                        return <AddNote history={routeProps.history} folders={folders} updateStateNotes={this.updateStateNotes} />
                     }}
                 />
             </>
@@ -159,6 +170,10 @@ export default class App extends Component {
             mainDelete: this.mainDelete,
             notePageDelete: this.notePageDelete
         }
+
+        console.log('this.state.notes', this.state.notes)
+        console.log('this.state.folders', this.state.folders)
+
         
         return (
             <NotefulContext.Provider value={contextValue}>

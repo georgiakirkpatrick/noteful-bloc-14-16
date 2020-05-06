@@ -2,6 +2,7 @@ import React from 'react'
 import ValidationError from '../ValidationError/ValidationError'
 import PropTypes from 'prop-types'
 import dayjs from 'dayjs'
+import idGenerator, { setPrefix } from 'react-id-generator'
 import './AddNote.css'
 
 
@@ -25,14 +26,21 @@ export default class AddNote extends React.Component {
     }
 
     handleNewNote(event) {
-        event.preventDefault();        
+        event.preventDefault();
+
+        setPrefix('note-id-')
+        
         const { noteName, noteContent, noteFolder } = this.state
+        const uniqueId = idGenerator()
         const newNoteInputs = {
+            id: uniqueId,
             name: noteName.value,
             modified: dayjs().format(),
             folderId: noteFolder.value,
             content: noteContent.value
         }
+
+        console.log('newNoteInputs', newNoteInputs)
 
         fetch(`http://localhost:9090/notes/`, {
           method: 'POST',
@@ -40,6 +48,12 @@ export default class AddNote extends React.Component {
           headers: {
             'content-type': 'application/json'
           }
+        })
+        .then((data) => {
+            console.log('data', data)
+        })
+        .then(() => {
+            this.props.updateStateNotes(newNoteInputs)
         })
         .then(() => {
             this.props.history.push('/')
@@ -140,7 +154,8 @@ export default class AddNote extends React.Component {
 
 AddNote.defaultProps = {
     folders: [],
-    history: {push: () => {}}
+    history: {push: () => {}},
+    updateStateNotes: () => {}
 }
   
 AddNote.propTypes = {
@@ -148,5 +163,6 @@ AddNote.propTypes = {
         id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired
     })),
-    history: PropTypes.object
+    history: PropTypes.object,
+    updateStateNotes: PropTypes.func
 }

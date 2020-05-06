@@ -1,6 +1,7 @@
 import React from 'react'
 import ValidationError from '../ValidationError/ValidationError'
 import PropTypes from 'prop-types'
+import idGenerator, { setPrefix } from 'react-id-generator'
 import './AddFolder.css'
 
 export default class AddFolder extends React.Component {
@@ -20,13 +21,27 @@ export default class AddFolder extends React.Component {
 
     handleNewFolder = event => {
         event.preventDefault();
+
+        setPrefix('folder-id-')
+
+        const { folderName } = this.state
+        const uniqueId = idGenerator()
+        const newFolderInputs = {
+            id: uniqueId,
+            name: folderName.value
+        }
+
+        console.log('newFolderInputs', newFolderInputs)
     
         fetch(`http://localhost:9090/folders/`, {
           method: 'POST',
-          body: JSON.stringify({name: this.state.folderName.value}),
+          body: JSON.stringify(newFolderInputs),
           headers: {
             'content-type': 'application/json'
           }
+        })
+        .then(() => {
+            this.props.updateStateFolders(newFolderInputs)
         })
         .then(() => {
             this.props.history.push('/')
@@ -77,9 +92,11 @@ export default class AddFolder extends React.Component {
 }
 
 AddFolder.defaultProps = {
-    history: {push: () => {}}
+    history: {push: () => {}},
+    updateStateFolders: () => {}
 }
   
 AddFolder.propTypes = {
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
+    updateStateFolders: PropTypes.func
 }
